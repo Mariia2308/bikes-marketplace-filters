@@ -1,0 +1,40 @@
+export const selectLocationFilteredBikes = createSelector(
+  [selectBikes, selectLocation],
+  (bikes, location) => {
+    if (location) {
+      // Тут можна додати логіку для фільтрації за відстанню від користувача, якщо є координати велосипедів
+      // Наприклад, перевіряти, чи є координати у велосипедах і порівнювати їх
+      return bikes.filter(bike => {
+        // Якщо велосипед має координати, перевіряємо відстань
+        if (bike.location) {
+          const distance = getDistance(location, bike.location); // Функція для обчислення відстані між координатами
+          return distance < 50; // Наприклад, велосипеди в межах 50 км від користувача
+        }
+        return false;
+      });
+    }
+    return bikes;
+  }
+);
+
+// Функція для обчислення відстані між координатами (широта, довгота) за допомогою Haversine формули
+const getDistance = (loc1, loc2) => {
+  const R = 6371; // Розмір Землі в км
+  const lat1 = loc1.latitude;
+  const lon1 = loc1.longitude;
+  const lat2 = loc2.latitude;
+  const lon2 = loc2.longitude;
+
+  const dLat = deg2rad(lat2 - lat1);
+  const dLon = deg2rad(lon2 - lon1);
+  const a = 
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+    Math.sin(dLon/2) * Math.sin(dLon/2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  const distance = R * c; // Відстань в км
+
+  return distance;
+}
+
+const deg2rad = (deg) => deg * (Math.PI / 180);

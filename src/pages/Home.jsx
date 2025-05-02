@@ -7,14 +7,8 @@ import PriceSlider from '../components/PriceSlider/PriceSlider';
 function Home() {
   return (
     <div>
-      <h1>Home</h1>
-      <p>Welcome to the Bike Shop!</p>
-      <p>Explore our collection of bikes and accessories.</p>
-    
-      <PriceSlider />
       <ThemeSwitcher />
-
-    
+      <PriceSlider />    
       <BikesList />
     </div>
   );

@@ -1,57 +1,16 @@
 // filterSelectors.js
 import { createSelector } from '@reduxjs/toolkit';
 import { selectAllBikes } from '../bikes/bikeSelectors';
+import { selectPriceFilteredBikes } from '../slider/sliderSelectors'; 
 
+// Імпортуємо селектор для фільтрації за ціною
 export const selectBikes = (state) => state.bikes.list;
+
 export const selectSelectedRetailer = (state) => state.filters.retailer;
 export const selectSelectedCategories = (state) => state.filters.category;
-export const selectSortByPrice = (state) => state.filters.sortByPrice;
-export const selectOnlyNewest = (state) => state.filters.onlyNewest;
-
-// filterSelectors.js
-
 export const selectLocation = (state) => state.filters.location;
-
-export const selectLocationFilteredBikes = createSelector(
-  [selectBikes, selectLocation],
-  (bikes, location) => {
-    if (location) {
-      // Тут можна додати логіку для фільтрації за відстанню від користувача, якщо є координати велосипедів
-      // Наприклад, перевіряти, чи є координати у велосипедах і порівнювати їх
-      return bikes.filter(bike => {
-        // Якщо велосипед має координати, перевіряємо відстань
-        if (bike.location) {
-          const distance = getDistance(location, bike.location); // Функція для обчислення відстані між координатами
-          return distance < 50; // Наприклад, велосипеди в межах 50 км від користувача
-        }
-        return false;
-      });
-    }
-    return bikes;
-  }
-);
-
-// Функція для обчислення відстані між координатами (широта, довгота) за допомогою Haversine формули
-const getDistance = (loc1, loc2) => {
-  const R = 6371; // Розмір Землі в км
-  const lat1 = loc1.latitude;
-  const lon1 = loc1.longitude;
-  const lat2 = loc2.latitude;
-  const lon2 = loc2.longitude;
-
-  const dLat = deg2rad(lat2 - lat1);
-  const dLon = deg2rad(lon2 - lon1);
-  const a = 
-    Math.sin(dLat/2) * Math.sin(dLat/2) +
-    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
-    Math.sin(dLon/2) * Math.sin(dLon/2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-  const distance = R * c; // Відстань в км
-
-  return distance;
-}
-
-const deg2rad = (deg) => deg * (Math.PI / 180);
+export const selectSortByPrice = (state) => state.filters.sortByPrice;
+export const selectOnlyNewest = (state) => state.filters.onlyNewest;// Це для фільтрації по новизні?
 
 // Унікальні категорії
 export const selectUniqueCategories = createSelector(
@@ -91,22 +50,19 @@ export const selectCategoryFilteredBikes = createSelector(
 export const selectNewestSortedBikes = createSelector(
   [selectBikes, selectOnlyNewest],
   (bikes, onlyNewest) => {
-    const twoWeeksAgo = new Date();
-    twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+    if (onlyNewest) {
+      const twoWeeksAgo = new Date();
+      twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14); // Віднімаємо два тижні
 
-    // Якщо фільтр увімкнено — відфільтровуємо нові
-    const filteredBikes = onlyNewest
-      ? bikes.filter(bike => new Date(bike.createdAt) >= twoWeeksAgo)
-      : bikes;
-
-    // Сортуємо всі (чи відфільтровані) — найновіші зверху
-    return [...filteredBikes].sort((a, b) => {
-      return new Date(b.createdAt) - new Date(a.createdAt);
-    });
+      // Фільтруємо велосипеди, які були додані за останні два тижні
+      return bikes.filter(bike => {
+        const bikeDate = new Date(bike.createdAt);
+        return bikeDate >= twoWeeksAgo;
+      });
+    }
+    return bikes;
   }
 );
-
-
 
 // Сортування за ціною (по зростанню)
 export const selectSortedByPriceBikes = createSelector(
@@ -120,20 +76,19 @@ export const selectSortedByPriceBikes = createSelector(
 // Комбінована фільтрація
 export const selectFilteredBikes = createSelector(
   [
-    selectRetailerFilteredBikes,
-    selectCategoryFilteredBikes,
-    selectNewestSortedBikes,
-    selectSortedByPriceBikes,
-    selectLocationFilteredBikes
+    selectPriceFilteredBikes, // Ціна
+    selectRetailerFilteredBikes, // Рітейлер
+    selectCategoryFilteredBikes, // Категорія
+    selectNewestSortedBikes, // Новизна
+    selectSortedByPriceBikes // Сортування по ціні
   ],
-  (retailerFiltered, categoryFiltered, newestFiltered, priceSortedFiltered, locationFiltered) => {
-    return locationFiltered
+  (priceFiltered, retailerFiltered, categoryFiltered, newestFiltered, sortedByPrice) => {
+    return sortedByPrice
       .filter(bike =>
+        priceFiltered.includes(bike) &&
         retailerFiltered.includes(bike) &&
         categoryFiltered.includes(bike) &&
-        newestFiltered.includes(bike) &&
-        priceSortedFiltered.includes(bike)
+        newestFiltered.includes(bike)
       );
   }
 );
-

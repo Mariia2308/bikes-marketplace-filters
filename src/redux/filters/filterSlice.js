@@ -1,8 +1,6 @@
-// filterSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  priceRange: [60, 5000],
   location: null,
   retailer: [],
   category: [],
@@ -14,9 +12,6 @@ const filtersSlice = createSlice({
   name: 'filters',
   initialState,
   reducers: {
-    setPriceRange: (state, action) => {
-      state.priceRange = action.payload;
-    },
     setLocation: (state, action) => {
       state.location = action.payload;
     },
@@ -37,7 +32,6 @@ const filtersSlice = createSlice({
 });
 
 export const {
-  setPriceRange,
   setLocation,
   setRetailer,
   setCategory,

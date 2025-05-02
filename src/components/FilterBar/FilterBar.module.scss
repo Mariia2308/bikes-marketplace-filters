@@ -1,39 +1,11 @@
-.filter-bar {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  
-    p {
-      margin: 0;
-      font-weight: bold;
-    }
-  
-    .filter-buttons {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap; /* на всяк випадок для адаптивності */
-    }
-  
-    .filter-button {
-      padding: 8px 12px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      cursor: pointer;
-      background-color: #f0f0f0;
-      color: black;
-      font-weight: normal;
-      transition: background-color 0.3s, color 0.3s;
-  
-      &:hover {
-        background-color: #007BFF;
-        color: white;
-      }
-  
-      &.active {
-        background-color: #007BFF;
-        color: white;
-        font-weight: bold;
-      }
-    }
-  }
-  
+.filterBar {
+  display: flex;
+  justify-content: flex-start;  // Вирівнювання кнопок по горизонталі
+  align-items: center;  // Вирівнювання кнопок по вертикалі (якщо потрібно)
+  gap: 10px;  // Відстань між кнопками
+  flex-wrap: wrap;  // Якщо місця не вистачить, кнопки переносяться на новий рядок
+}
+
+.resetButton {
+  margin-left: auto;  // Переміщає кнопку скидання вправо
+}

@@ -1,32 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Box, Slider, TextField, Typography, Grid } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { setPriceRange } from '../../redux/slider/sliderSlice';
+import { selectPriceRange } from '../../redux/slider/sliderSelectors';
 
-const histogramData = [3, 6, 10, 8, 12, 9, 5, 4, 12, 1, 6, 10, 8, 12, 9, 5, 4, 12, 6, 10, 8, 12, 9, 5, 4, 12, 6, 10, 8, 12, 9, 5, 4, 2]; // Примерные данные для гистограммы
-const minPrice = 60;
+const histogramData = [3, 6, 10, 8, 12, 9, 5, 4, 12, 1, 6, 10, 8, 12, 9, 5, 4, 12, 6, 10, 8, 12, 9, 5, 4, 12, 6, 10, 8, 12, 9, 5, 4, 2]; // Примерні дані для гістограми
+const minPrice = 1;
 const maxPrice = 5600;
 
 export default function PriceSlider() {
-  const [range, setRange] = useState([minPrice, maxPrice]);
+  const dispatch = useDispatch();
+  const range = useSelector(selectPriceRange);
+  useEffect(() => {
+    dispatch(setPriceRange(range)); // Встановлюємо початковий діапазон
+  }, [dispatch, range]);
 
   const handleSliderChange = (event, newValue) => {
-    setRange(newValue);
+    dispatch(setPriceRange(newValue)); // Оновлюємо діапазон у Redux
   };
 
   const handleInputChange = (index) => (event) => {
     const newVal = Number(event.target.value);
     const newRange = [...range];
     newRange[index] = newVal;
-    setRange([
+    dispatch(setPriceRange([
       Math.max(minPrice, Math.min(newRange[0], newRange[1])),
-      Math.min(maxPrice, Math.max(newRange[0], newRange[1]))
-    ]);
+      Math.min(maxPrice, Math.max(newRange[0], newRange[1])),
+    ])); // Оновлюємо діапазон у Redux
   };
 
   return (
     <Box sx={{ width: '100%', maxWidth: 600, mx: 'auto', mt: 5 }}>
       <Typography variant="h6">Price Range</Typography>
 
-      {/* Гистограмма */}
+      {/* Гістограма */}
       <Box sx={{ display: 'flex', alignItems: 'flex-end', height: 80, mb: 2 }}>
         {histogramData.map((value, index) => (
           <Box
@@ -56,7 +63,7 @@ export default function PriceSlider() {
         valueLabelDisplay="auto"
       />
 
-      {/* Ввод вручную */}
+      {/* Ввід вручну */}
       <Grid container spacing={2} sx={{ mt: 2 }}>
         <Grid item xs={6}>
           <TextField
@@ -78,9 +85,6 @@ export default function PriceSlider() {
         </Grid>
       </Grid>
 
-      <Typography sx={{ mt: 2 }}>
-        Selected range: ${range[0]} – ${range[1]}
-      </Typography>
     </Box>
   );
 }
