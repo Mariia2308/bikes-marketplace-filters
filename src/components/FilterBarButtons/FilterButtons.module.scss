@@ -1,0 +1,77 @@
+.filterContainer {
+    position: relative;
+    display: inline-block;
+    font-family: sans-serif;
+    width: fit-content; /* Додаємо обмеження по ширині */
+    min-width: 200px;    /* Мінімальна ширина, щоб не ламалося */
+  }
+    
+  .filterButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: var(--button-bg);
+    border: 1px solid var(--button-border);
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    color: var(--text-color);
+    box-sizing: border-box;
+  }
+    
+  .chevron {
+    margin-left: auto;
+  }
+    
+  .dropdownList {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--dropdown-bg);
+    border: 1px solid var(--dropdown-border);
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+    z-index: 100;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: var(--text-color);
+    box-sizing: border-box;
+  }
+    
+  .checkboxContainer {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+    
+  .checkboxItem {
+    margin-bottom: 10px;
+  }
+    
+  .checkboxLabel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+    
+  .checkboxLabel input {
+    margin-left: 10px;
+  }
+    
+  :root {
+    --button-bg: #f0f0f0;
+    --button-border: #ccc;
+    --dropdown-bg: #fff;
+    --dropdown-border: #ccc;
+    --text-color: #000;
+  }
+    
+  [data-theme="dark"] {
+    --button-bg: #333;
+    --button-border: #555;
+    --dropdown-bg: #fff;
+    --dropdown-border: #555;
+    --text-color: #000;
+  }
+  

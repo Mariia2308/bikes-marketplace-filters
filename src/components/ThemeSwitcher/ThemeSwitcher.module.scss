@@ -1,0 +1,36 @@
+$light-bg: #f0f0f0;
+$dark-bg: #333;
+$light-text: #000;
+$dark-text: #fff;
+
+.theme-switcher {
+  padding: 10px;
+
+  button {
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: transparent;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #444;
+    }
+  }
+
+  // Для підтримки темної теми (за бажанням)
+  body.dark-theme & {
+    background-color: $dark-bg;
+
+    button {
+      color: $dark-text;
+      border-color: #666;
+
+      &:hover {
+        background-color: #444;
+      }
+    }
+  }
+}
