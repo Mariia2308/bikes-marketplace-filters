@@ -8,7 +8,7 @@
   width: fit-content;
 }
 
-// === Общая кнопка
+
 .filterButton {
   display: inline-flex;
   justify-content: center;
@@ -26,9 +26,15 @@
   white-space: nowrap;
   box-sizing: border-box;
   min-width: 131px;
+
+    &--active {
+    background-color:#6B7280;
+    color: #fff;
+    border-color: #fff;
+  }
 }
 
-// === Кнопка Reset (иконка, меньше размером)
+
 .resetButton {
   display: inline-flex;
   justify-content: center;
@@ -58,7 +64,7 @@
   font-size: 0.9rem;
 }
 
-// === Dropdown list
+
 .dropdownList {
   position: absolute;
   top: calc(100% + 0.4rem);
@@ -96,7 +102,7 @@
   margin-left: 10px;
 }
 
-// === Мобильные и планшеты — только минимальные правки
+
 @media (max-width: 1199px) {
   .filterContainer {
     width: auto;

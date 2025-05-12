@@ -19,7 +19,10 @@ const FilterNewestButton = () => {
   }, [dispatch, onlyNewest]);
 
   return (
-    <button className={styles.filterButton} onClick={handleClick}>
+    <button
+      className={`${styles.filterButton} ${onlyNewest ? styles['filterButton--active'] : ''}`}
+      onClick={handleClick}
+    >
       Newest
     </button>
   );

@@ -49,9 +49,14 @@ const FilterSpecificationButton = () => {
     setIsOpen(prev => !prev);
   };
 
+  const isActive = selectedCategories.length > 0;
+
   return (
     <div className={styles.filterContainer} ref={dropdownRef}>
-      <button className={styles.filterButton} onClick={toggleDropdown}>
+      <button
+        className={`${styles.filterButton} ${isActive ? styles['filterButton--active'] : ''}`}
+        onClick={toggleDropdown}
+      >
         Specification
       </button>
 

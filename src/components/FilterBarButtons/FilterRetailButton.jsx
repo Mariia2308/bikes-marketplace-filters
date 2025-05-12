@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setRetailer } from '../../redux/filters/filterSlice';
-import { selectSelectedRetailer, selectUniqueRetailers} from '../../redux/filters/filterSelectors';
+import { selectSelectedRetailer, selectUniqueRetailers } from '../../redux/filters/filterSelectors';
 import styles from './ButtonsStyles/FilterButtons.module.scss';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 
@@ -45,10 +45,12 @@ const FilterRetailButton = () => {
 
   const toggleDropdown = () => setIsOpen(prev => !prev);
 
+  const isActive = selectedRetailers.length > 0;
+
   return (
     <div className={styles.filterContainer} ref={dropdownRef}>
       <button
-        className={`${styles.filterButton} ${styles.dropdownFilterButton}`}
+        className={`${styles.filterButton} ${styles.dropdownFilterButton} ${isActive ? styles['filterButton--active'] : ''}`}
         onClick={toggleDropdown}
       >
         Retailer

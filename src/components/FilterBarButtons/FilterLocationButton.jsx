@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setLocation } from '../../redux/filters/filterSlice';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import styles from './ButtonsStyles/FilterButtons.module.scss';
 
 const FilterLocationButton = () => {
   const dispatch = useDispatch();
+  const location = useSelector((state) => state.filters.location);
   const [, setSavedLocation] = useLocalStorage('location', null);
+  const isActive = location?.city && location?.country;
 
   const handleUseBrowserLocation = () => {
     if (!navigator.geolocation) {
@@ -47,7 +49,7 @@ const FilterLocationButton = () => {
       },
       (error) => {
         console.warn("Geolocation error:", error);
-        alert("Permission denied or unavailable location. This website is currently coudnt recognize your location. Try default Browser"); 
+        alert("Permission denied or unavailable location. This website is currently unable to recognize your location. Try opening it in your default browser.");
       }
     );
   };
@@ -60,7 +62,10 @@ const FilterLocationButton = () => {
   }, [dispatch]);
 
   return (
-    <button className={styles.filterButton} onClick={handleUseBrowserLocation}>
+    <button
+      className={`${styles.filterButton} ${isActive ? styles['filterButton--active'] : ''}`}
+      onClick={handleUseBrowserLocation}
+    >
       Closest
     </button>
   );

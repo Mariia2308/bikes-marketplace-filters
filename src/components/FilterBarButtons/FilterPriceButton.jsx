@@ -29,7 +29,10 @@ const FilterPriceButton = () => {
   };
 
   return (
-    <button className={styles.filterButton} onClick={handleClick}>
+    <button
+      className={`${styles.filterButton} ${sortByPrice ? styles['filterButton--active'] : ''}`}
+      onClick={handleClick}
+    >
       Price
     </button>
   );
