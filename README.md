@@ -40,6 +40,8 @@ This is a responsive bike marketplace application built with **React**, **Redux 
 * Pagination auto-adjusts to valid page if filters reduce visible items
 * MUI-based components customized for theme, histogram and slider.
 
+
+
 ## Styling
 
 * Uses **SCSS modules** for component isolation
@@ -77,11 +79,33 @@ This is a responsive bike marketplace application built with **React**, **Redux 
 * The price slider limits prevent overlap (right < left and vice versa)
 * If filtered result has fewer pages than current one, pagination resets to first
 
+🌍 Geolocation Support
+The "Closest" button attempts to detect the user's location using the browser's geolocation API combined with the Nominatim reverse geocoding service.
+
+✅ Tested and currently working in:
+
+Firefox (latest)
+
+Edge (latest)
+
+⚠️ Not yet working in:
+
+Chrome
+
+Safari
+
+This limitation is due to secure context requirements. Geolocation requires HTTPS, and some browsers block location access for static GitHub Pages even when served over HTTPS.
+
+✅ You can test geolocation on localhost or Firefox.
+🔒 In Chrome/Safari, location may not trigger due to stricter cross-origin or permissions policies.
+
+
+
 ## Installation
 
 ```bash
 npm install
-npm start
+npm run dev
 ```
 
 ---
