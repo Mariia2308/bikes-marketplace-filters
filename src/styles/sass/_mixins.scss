@@ -1,6 +1,6 @@
 // _mixins.scss
 
-// Міксин для кнопок
+
 @mixin button($bg-color, $text-color) {
     background-color: $bg-color;
     color: $text-color;
@@ -14,7 +14,7 @@
     }
   }
   
-  // Міксин для слайдера
+
   @mixin slider($width, $height, $bgColor, $borderRadius) {
     width: $width;
     height: $height;
