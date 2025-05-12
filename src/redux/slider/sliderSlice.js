@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  priceRange: [1, 5000], // Початковий діапазон
+  priceRange: [600, 5000], 
 };
 
 const priceSliderSlice = createSlice({
@@ -9,13 +9,13 @@ const priceSliderSlice = createSlice({
   initialState,
   reducers: {
     setPriceRange: (state, action) => {
-      state.priceRange = action.payload; // Оновлюємо priceRange
+      state.priceRange = action.payload;
     },
   },
 });
 
-// Додаємо селектор для отримання діапазону цін
-export const selectPriceRange = (state) => state.priceSlider.priceRange;
+
+
 
 export const { setPriceRange } = priceSliderSlice.actions;
 export default priceSliderSlice.reducer;

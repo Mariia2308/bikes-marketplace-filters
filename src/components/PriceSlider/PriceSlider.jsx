@@ -1,90 +1,95 @@
-import React, { useEffect } from 'react';
-import { Box, Slider, TextField, Typography, Grid } from '@mui/material';
+// PriceSlider.js
+import React from 'react';
+import { Box, Typography, useTheme, useMediaQuery } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPriceRange } from '../../redux/slider/sliderSlice';
 import { selectPriceRange } from '../../redux/slider/sliderSelectors';
+import PriceInput from '../PriceInput/PriceInput';
+import ThemeSwitcher from '../ThemeSwitcher/ThemeSwitcher';
+import Histogram, { getHistogramDimensions } from '../Histogram/Histogram';
+import PriceSliderComponent from '../PriceSliderComponent/PriceSliderComponent';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { useEffect } from 'react';
 
-const histogramData = [3, 6, 10, 8, 12, 9, 5, 4, 12, 1, 6, 10, 8, 12, 9, 5, 4, 12, 6, 10, 8, 12, 9, 5, 4, 12, 6, 10, 8, 12, 9, 5, 4, 2]; // Примерні дані для гістограми
-const minPrice = 1;
-const maxPrice = 5600;
+const histogramData = [4, 8, 5, 9, 2, 11, 6, 10, 12, 3, 6, 10, 8, 12, 9, 5, 4, 12, 1, 6, 10, 8, 12, 9, 5, 4, 12, 6, 10, 8, 12, 9, 5, 4, 12, 6, 10, 8, 12, 9, 5, 4, 2, 3, 7, 5, 2, 9, 12, 8, 13, 5];
+
+const minSliderLimit = 0;
+const maxSliderLimit = 5600;
 
 export default function PriceSlider() {
   const dispatch = useDispatch();
-  const range = useSelector(selectPriceRange);
+  const reduxRange = useSelector(selectPriceRange);
+  const [storedRange, setStoredRange] = useLocalStorage('priceRange', reduxRange);
+
   useEffect(() => {
-    dispatch(setPriceRange(range)); // Встановлюємо початковий діапазон
-  }, [dispatch, range]);
+    if (storedRange && Array.isArray(storedRange)) {
+      dispatch(setPriceRange(storedRange));
+    }
+  }, [dispatch]);
 
   const handleSliderChange = (event, newValue) => {
-    dispatch(setPriceRange(newValue)); // Оновлюємо діапазон у Redux
+    const [newMin, newMax] = newValue;
+    const clamped = [
+      Math.max(minSliderLimit, newMin),
+      Math.min(maxSliderLimit, newMax),
+    ];
+    dispatch(setPriceRange(clamped));
+    setStoredRange(clamped);
   };
 
   const handleInputChange = (index) => (event) => {
-    const newVal = Number(event.target.value);
-    const newRange = [...range];
+    const input = event.target.value.replace(/[^0-9]/g, '');
+    const newVal = Number(input);
+    const newRange = [...reduxRange];
     newRange[index] = newVal;
-    dispatch(setPriceRange([
-      Math.max(minPrice, Math.min(newRange[0], newRange[1])),
-      Math.min(maxPrice, Math.max(newRange[0], newRange[1])),
-    ])); // Оновлюємо діапазон у Redux
+
+    if (index === 0 && newVal > newRange[1]) newRange[1] = newVal;
+    if (index === 1 && newVal < newRange[0]) newRange[0] = newVal;
+
+    const clampedMin = Math.max(minSliderLimit, newRange[0]);
+    const clampedMax = Math.min(maxSliderLimit, newRange[1]);
+    const updated = [clampedMin, clampedMax];
+
+    dispatch(setPriceRange(updated));
+    setStoredRange(updated);
   };
 
-  return (
-    <Box sx={{ width: '100%', maxWidth: 600, mx: 'auto', mt: 5 }}>
-      <Typography variant="h6">Price Range</Typography>
+  const averagePrice = Math.round((reduxRange[1] - reduxRange[0]) / 2);
+  const bucketCount = histogramData.length;
+  const priceStep = (maxSliderLimit - minSliderLimit) / bucketCount;
 
-      {/* Гістограма */}
-      <Box sx={{ display: 'flex', alignItems: 'flex-end', height: 80, mb: 2 }}>
-        {histogramData.map((value, index) => (
-          <Box
-            key={index}
-            sx={{
-              flex: 1,
-              mx: 0.25,
-              height: `${value * 5}px`,
-              backgroundColor:
-                (index / histogramData.length) * (maxPrice - minPrice) + minPrice >= range[0] &&
-                (index / histogramData.length) * (maxPrice - minPrice) + minPrice <= range[1]
-                  ? 'primary.main'
-                  : 'grey.300',
-              borderRadius: 1,
-            }}
-          />
-        ))}
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+  const { containerHeight } = getHistogramDimensions(isMobile, isTablet);
+
+  return (
+    <Box sx={{ width: '100%', margin: '0 auto', px: { xs: 2, sm: 3, md: 4 }, py: 4, display: 'flex', flexDirection: 'column', gap: 3 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography sx={{ fontSize: { xs: '1.2rem', sm: '1.4rem', md: '1.6rem' } }}>Price Range</Typography>
+        <ThemeSwitcher />
       </Box>
 
-      {/* Слайдер */}
-      <Slider
-        value={range}
-        min={minPrice}
-        max={maxPrice}
-        step={1}
-        onChange={handleSliderChange}
-        valueLabelDisplay="auto"
-      />
+      <Typography sx={{ fontSize: { xs: '1.2rem', sm: '1.4rem', md: '1.6rem' } }}>
+        The average nightly price is ${averagePrice}
+      </Typography>
 
-      {/* Ввід вручну */}
-      <Grid container spacing={2} sx={{ mt: 2 }}>
-        <Grid item xs={6}>
-          <TextField
-            label="Min Price"
-            type="number"
-            value={range[0]}
-            onChange={handleInputChange(0)}
-            fullWidth
+      <Box sx={{ position: 'relative', height: containerHeight + 40 }}>
+        <Histogram histogramData={histogramData} range={reduxRange} priceStep={priceStep} minSliderLimit={minSliderLimit} />
+        <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 2 }}>
+          <PriceSliderComponent
+            range={reduxRange}
+            handleSliderChange={handleSliderChange}
+            minSliderLimit={minSliderLimit}
+            maxSliderLimit={maxSliderLimit}
           />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            label="Max Price"
-            type="number"
-            value={range[1]}
-            onChange={handleInputChange(1)}
-            fullWidth
-          />
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
 
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'center', alignItems: 'center', gap: 2 }}>
+        <PriceInput label="Min price" value={reduxRange[0]} onChange={handleInputChange(0)} />
+        <PriceInput label="Max price" value={reduxRange[1]} onChange={handleInputChange(1)} />
+      </Box>
     </Box>
   );
 }

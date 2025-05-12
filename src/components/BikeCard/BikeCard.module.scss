@@ -1,103 +1,99 @@
+@use '../../styles/sass/variables' as *;
+@use '../../styles/sass/mixins' as *;
+
 .bikeCard {
+  padding: 2.4rem;
+  background: $somegray;
+  border-radius: 0.6rem;
   display: flex;
   flex-direction: column;
-  padding: 20px;
-  background: #F3F4F6;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
   height: auto;
-  margin: 10px;
-
-  &__content {
-    display: flex;
-    justify-content: space-between; /* Розміщення двох частин по боках */
-    align-items: center;
-    width: 100%; /* Розтягуємо по всій ширині */
-  }
+  min-height: 10.5rem;
+  margin-bottom: 0.8rem;
 
   &__left {
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    flex-grow: 1; /* Даємо лівій частині займати всю доступну ширину */
+    gap: 0.4rem;
+    word-break: break-word;
+    overflow-wrap: anywhere;
   }
 
-  &__right {
+  &__category {
+    @include text($gray, $font-md, $fw-regular, $lh-md);
+  }
+
+  &__row {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.8rem;
   }
 
   &__title {
-    font-family: 'Inter', sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    color: #000;
-    margin: 0;
-    width: 100%; /* Назва займає всю ширину */
-    white-space: nowrap; /* Запобігає переносу тексту на новий рядок */
-    overflow: hidden; /* При потребі приховує текст, що виходить за межі */
-    text-overflow: ellipsis; /* Додає "..." для довгих назв */
-  }
-
-  &__category, &__location {
-    font-family: 'Inter', sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    color: #6B7280;
-    margin: 0;
+    @include text($black, $font-md, $fw-bold, $lh-md);
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__price {
-    font-family: 'Inter', sans-serif;
-    font-size: 18px;
-    font-weight: 700;
-    color: #000;
-    margin-top: 10px;
+    @include text($black, $font-md, $fw-bold, $lh-md);
+    white-space: nowrap;
   }
 
-  &__footer {
-    margin-top: 10px;
-    font-size: 14px;
-    color: #666;
+  &__location {
+    @include text($gray, $font-md, $fw-regular, $lh-md);
   }
 
-  &__createdAt,
-  &__retailer {
-    margin: 5px 0;
-  }
-
-  /* Тема світла */
-  .light &__createdAt,
-  .light &__retailer {
-    color: #333; /* Темніший колір для світлої теми */
-  }
-
-  /* Тема темна */
-  .dark &__createdAt,
-  .dark &__retailer {
-    color: #ccc; /* Світліший колір для темної теми */
-  }
-
-  &__createdAt {
-    font-style: italic;
-  }
-
-  &__retailer {
-    font-weight: bold;
+  &:last-child {
+    margin-bottom: 0;
   }
 }
-/* BikeCard.module.scss */
-.new-badge {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: #4caf50;
-  color: white;
-  font-weight: bold;
-  padding: 4px 8px;
+
+.newBadge {
+  font-size: $font-sm;
+  line-height: $lh-sm;
+  font-weight: $fw-semibold;
+  color: $red;
+  background-color: rgba(255, 0, 0, 0.08); 
+  padding: 0.2rem 0.6rem;
   border-radius: 4px;
-  font-size: 0.8rem;
+  display: inline-block;
+  width: fit-content;
+  margin-bottom: 0.4rem;
 }
 
+
+@include media-down(sm) {
+  .bikeCard {
+    padding: 1.6rem;
+    gap: 0.4rem;
+  }
+
+  .newBadge {
+    font-size: 1rem;
+  }
+}
+
+
+@include media-down(md) {
+  .bikeCard {
+    padding: 2rem;
+
+    &__price {
+      font-size: 1.4rem;
+    }
+
+    &__title {
+      font-size: 1.4rem;
+    }
+  }
+
+  .newBadge {
+    font-size: 1rem;
+  }
+}

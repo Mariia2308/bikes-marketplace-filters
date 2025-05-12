@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCategory } from '../../redux/filters/filterSlice';
 import { selectSelectedCategories, selectUniqueCategories } from '../../redux/filters/filterSelectors';
-import styles from './FilterButtons.module.scss';
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import styles from './ButtonsStyles/FilterButtons.module.scss';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 const FilterSpecificationButton = () => {
   const dispatch = useDispatch();
@@ -11,6 +11,30 @@ const FilterSpecificationButton = () => {
   const categories = useSelector(selectUniqueCategories);
 
   const [isOpen, setIsOpen] = useState(false);
+  const [storedCategories, setStoredCategories] = useLocalStorage('selectedCategories', []);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    if (storedCategories.length > 0) {
+      dispatch(setCategory(storedCategories));
+    }
+  }, [dispatch, storedCategories]);
+
+  useEffect(() => {
+    setStoredCategories(selectedCategories);
+  }, [selectedCategories, setStoredCategories]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handleCheckboxChange = (e) => {
     const category = e.target.value;
@@ -22,14 +46,13 @@ const FilterSpecificationButton = () => {
   };
 
   const toggleDropdown = () => {
-    setIsOpen(!isOpen);
+    setIsOpen(prev => !prev);
   };
 
   return (
-    <div className={styles.filterContainer}>
+    <div className={styles.filterContainer} ref={dropdownRef}>
       <button className={styles.filterButton} onClick={toggleDropdown}>
         Specification
-        {isOpen ? <FaChevronUp className={styles.chevron} /> : <FaChevronDown className={styles.chevron} />}
       </button>
 
       {isOpen && (

@@ -1,0 +1,17 @@
+.bikesListWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+  width: 100%;
+  max-width: 1307px;
+  margin: 0 auto;
+}
+
+.bikesFoundText {
+  font-family: "Inter", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 2.7rem;
+  line-height: 3.3rem;
+  color: #000;
+}/*# sourceMappingURL=BikeList.module.css.map */

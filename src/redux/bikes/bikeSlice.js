@@ -1,24 +1,24 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { ref, get } from 'firebase/database'; // Підключення до Realtime Database
+import { ref, get } from 'firebase/database'; 
 import { db } from '../../firebase';
 
-// Асинхронне отримання велосипедів з Realtime Database
+
 export const fetchBikes = createAsyncThunk('bikes/fetchBikes', async () => {
-  const dbRef = ref(db, 'bikes'); // Вказуємо шлях до колекції "bikes" в базі даних
-  const snapshot = await get(dbRef); // Отримуємо дані
-  console.log(snapshot.val()); // Лог для перевірки отриманих даних
+  const dbRef = ref(db, 'bikes'); 
+  const snapshot = await get(dbRef); 
+  console.log(snapshot.val()); 
   if (snapshot.exists()) {
-    // Якщо дані є, перетворюємо їх в масив
+   
     return Object.entries(snapshot.val()).map(([id, bike]) => ({ id, ...bike }));
   } else {
-    return []; // Якщо даних немає, повертаємо порожній масив
+    return []; 
   }
 });
 
 const bikeSlice = createSlice({
   name: 'bikes',
   initialState: {
-    list: [],  // Назва зміщена з 'items' на 'list'
+    list: [],  
     loading: false,
     error: null
   },
@@ -31,11 +31,11 @@ const bikeSlice = createSlice({
       })
       .addCase(fetchBikes.fulfilled, (state, action) => {
         state.loading = false;
-        state.list = action.payload; // Зберігаємо отримані байки в state
+        state.list = action.payload; 
       })
       .addCase(fetchBikes.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message; // Зберігаємо помилку, якщо вона є
+        state.error = action.error.message; 
       });
   }
 });

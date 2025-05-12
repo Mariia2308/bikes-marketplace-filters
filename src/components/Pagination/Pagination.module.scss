@@ -1,0 +1,114 @@
+@use '../../styles/sass/variables' as *;
+
+@use '../../styles/sass/mixins' as *;
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.pageButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border: 1px solid #C7C7C7;
+  border-radius: 0.5rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.4rem;
+  line-height: 1.6rem;
+  color:$gray-dark; 
+  background: var(--bg-color); 
+
+  background: transparent;
+  cursor: pointer;
+
+  &--active {
+    background: $gray-midlight; 
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+}
+
+.resultsPerPage {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: flex-end;
+
+  label {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--text-color); 
+  }
+
+  select {
+    padding: 0.4rem 0.6rem;
+    background: var(--bg-color); 
+    border-radius: 0.5rem;
+    font-size: 1.4rem;
+    border: 1px solid var(--rail-color); 
+    color: var(--text-color); 
+    cursor: pointer;
+    max-width: 100px;
+  }
+}
+
+
+
+@media (max-width: 1024px) {
+  .pageButton {
+    padding: 0.4rem 0.7rem;
+    font-size: 1.2rem;
+    line-height: 1.4rem;
+    border-radius: 0.45rem;
+  }
+
+  .resultsPerPage {
+    label {
+      font-size: 1.2rem;
+    }
+
+    select {
+      font-size: 1.2rem;
+      padding: 0.35rem 0.6rem;
+      max-width: 90px;
+    }
+  }
+}
+
+
+@media (max-width: 767px) {
+  .pagination {
+    flex-wrap: wrap;
+  }
+
+  .pageButton {
+    padding: 0.3rem 0.5rem;
+    font-size: 1rem;
+    line-height: 1.2rem;
+    border-radius: 0.4rem;
+  }
+
+  .resultsPerPage {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.6rem;
+
+    label {
+      font-size: 1.2rem;
+    }
+
+    select {
+      font-size: 1.2rem;
+      padding: 0.5rem 0.8rem;
+      max-width: 100%;
+    }
+  }
+}

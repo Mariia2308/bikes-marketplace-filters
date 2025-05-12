@@ -1,20 +1,14 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchBikes } from '../../redux/bikes/bikeSlice';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { selectFilteredBikes } from '../../redux/filters/filterSelectors';
 import BikeCard from '../BikeCard/BikeCard';
 import { usePagination } from '../../hooks/usePagination';
-import Pagination from '../Pagination/Pagination';
-import FilterBar from '../FilterBar/FilterBar';
+import BikeListControls from '../BikeListControls/BikeListControls';
+import FilterResetButton from '../FilterBarButtons/FilterResetButton';
+import styles from './BikesList.module.scss';
 
 const BikesList = () => {
-  const dispatch = useDispatch();
-  const bikes = useSelector(selectFilteredBikes); // Використовуємо комбінований фільтр
-  const loading = useSelector(state => state.bikes.loading); // Статус завантаження
-
-  useEffect(() => {
-    dispatch(fetchBikes()); // Завантажуємо байки при монтуванні компонента
-  }, [dispatch]);
+  const bikes = useSelector(selectFilteredBikes);
 
   const {
     paginatedItems,
@@ -29,26 +23,23 @@ const BikesList = () => {
     hasPrev,
   } = usePagination(bikes);
 
-  if (loading) return <p>Loading...</p>;
-  if (!bikes || bikes.length === 0) return <p>Немає доступних велосипедів.</p>;
+  if (!bikes || bikes.length === 0) {
+    return (
+      <div className={styles.noResultsWrapper}>
+        <p>No available bikes by chosen filters</p>
+        <FilterResetButton />
+      </div>
+    );
+  }
 
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2>{bikes.length} bikes found</h2>
-        <div>
-          <label>На сторінці: </label>
-          <select value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))}>
-            {[5, 10, 15].map(num => (
-              <option key={num} value={num}>{num}</option>
-            ))}
-          </select>
-        </div>
-      </div>
+    <div className={styles.bikesListWrapper}>
+      <p className={styles.bikesFoundText}>{bikes.length} bikes found</p>
 
-      <FilterBar />
-
-      <Pagination
+      <BikeListControls
+        bikes={bikes}
+        itemsPerPage={itemsPerPage}
+        setItemsPerPage={setItemsPerPage}
         currentPage={currentPage}
         totalPages={totalPages}
         nextPage={nextPage}
@@ -58,7 +49,7 @@ const BikesList = () => {
         hasPrev={hasPrev}
       />
 
-      {paginatedItems.map(bike => (
+      {paginatedItems.map((bike) => (
         <BikeCard key={bike.id} bike={bike} />
       ))}
     </div>

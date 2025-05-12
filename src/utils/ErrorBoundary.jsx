@@ -10,7 +10,6 @@ class ErrorBoundary extends Component {
   componentDidCatch(error, errorInfo) {
     console.error("ErrorBoundary caught an error", error, errorInfo);
     this.setState({ errorInfo });
-    // Тут можна відправити лог на сервер
   }
 
   render() {

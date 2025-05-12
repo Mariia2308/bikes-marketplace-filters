@@ -1,0 +1,51 @@
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem 0.8rem;
+  width: 100%;
+}
+
+.pageButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.6rem 1.2rem;
+  border: 1px solid #C7C7C7;
+  border-radius: 0.6rem;
+  font-family: "Inter", sans-serif;
+  font-size: 1.6rem;
+  line-height: 1.9rem;
+  color: #000;
+  background: transparent;
+  cursor: pointer;
+}
+.pageButton--active {
+  background: #E5E7EB;
+}
+.pageButton:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.resultsPerPage {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  justify-content: flex-end;
+  margin-top: 1.6rem;
+}
+.resultsPerPage label {
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: #656565;
+}
+.resultsPerPage select {
+  padding: 0.6rem 0.8rem;
+  background: #E5E7EB;
+  border-radius: 0.6rem;
+  font-size: 1.6rem;
+  border: none;
+  color: #656565;
+}/*# sourceMappingURL=Pagination.module.css.map */

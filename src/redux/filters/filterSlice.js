@@ -1,11 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
-
 const initialState = {
-  location: null,
+  location: {
+    country: '',
+    city: '',
+  },
+  countries: [],
+  cities: [],
   retailer: [],
   category: [],
   onlyNewest: false,
-  sortByPrice: false, // Це властивість для сортування по ціні
+  sortByPrice: false,
 };
 
 const filtersSlice = createSlice({
@@ -22,11 +26,15 @@ const filtersSlice = createSlice({
       state.category = action.payload;
     },
     setSortByPrice: (state, action) => {
-      state.sortByPrice = action.payload; // Це має перемикати стан
+      state.sortByPrice = action.payload;
     },
     setSortByNewest: (state) => {
       state.onlyNewest = !state.onlyNewest;
     },
+    setSortByNewestValue: (state, action) => {
+      state.onlyNewest = action.payload;
+    },
+    
     resetFilters: () => initialState,
   },
 });
@@ -35,6 +43,7 @@ export const {
   setLocation,
   setRetailer,
   setCategory,
+  setSortByNewestValue,
   setSortByPrice,
   setSortByNewest,
   resetFilters,

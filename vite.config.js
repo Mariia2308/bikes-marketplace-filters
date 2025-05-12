@@ -6,5 +6,10 @@ export default defineConfig({
  plugins: [react()],
  build: {
   sourcemap: true,
- }
+ },
+ preprocessorOptions: {
+    scss: {
+      additionalData: '@use "./src/styles/main.scss" as *;', // Підключаємо основний SCSS файл
+    },
+    },
 });

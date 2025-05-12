@@ -1,0 +1,99 @@
+@charset "UTF-8";
+.bikeCard {
+  padding: 2.4rem;
+  background: #E5E7EB;
+  border-radius: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  min-height: 10.5rem;
+}
+.bikeCard__left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+.bikeCard__category {
+  font-family: "Inter", sans-serif;
+  font-style: normal;
+  font-size: 1.6rem;
+  line-height: 1.9rem;
+  font-weight: 400;
+  color: #6B7280;
+}
+.bikeCard__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+.bikeCard__title {
+  font-family: "Inter", sans-serif;
+  font-style: normal;
+  font-size: 1.6rem;
+  line-height: 1.9rem;
+  font-weight: 700;
+  color: #000000;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bikeCard__price {
+  font-family: "Inter", sans-serif;
+  font-style: normal;
+  font-size: 1.6rem;
+  line-height: 1.9rem;
+  font-weight: 700;
+  color: #000000;
+  white-space: nowrap;
+}
+.bikeCard__location {
+  font-family: "Inter", sans-serif;
+  font-style: normal;
+  font-size: 1.6rem;
+  line-height: 1.9rem;
+  font-weight: 400;
+  color: #6B7280;
+}
+.bikeCard:last-child {
+  margin-bottom: 0;
+}
+
+.newBadge {
+  font-size: 1.2rem;
+  line-height: 1.4rem;
+  font-weight: 600;
+  color: #FF4D4F;
+  margin-bottom: 0.4rem;
+}
+
+/* 📱 Mobile */
+@media (max-width: 767px) {
+  .bikeCard {
+    padding: 1.6rem;
+    gap: 0.4rem;
+  }
+  .newBadge {
+    font-size: 1rem;
+  }
+}
+/* 💊 Tablet */
+@media (max-width: 1024px) {
+  .bikeCard {
+    padding: 2rem;
+  }
+  .bikeCard__price {
+    font-size: 1.4rem;
+  }
+  .bikeCard__title {
+    font-size: 1.4rem;
+  }
+  .newBadge {
+    font-size: 1rem;
+  }
+}/*# sourceMappingURL=BikeCard.module.css.map */

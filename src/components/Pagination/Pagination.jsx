@@ -1,33 +1,33 @@
 import React from 'react';
+import styles from './Pagination.module.scss';
+import clsx from 'clsx';
 
-const Pagination = ({ 
-  currentPage, 
-  totalPages, 
-  nextPage, 
-  prevPage, 
-  setCurrentPage, 
-  hasNext, 
-  hasPrev 
+const Pagination = ({
+  currentPage,
+  totalPages,
+  nextPage,
+  prevPage,
+  setCurrentPage,
+  hasNext,
+  hasPrev
 }) => {
   return (
-    <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-      <button onClick={() => setCurrentPage(1)} disabled={!hasPrev}>⏮️ Початок</button>
-      <button onClick={prevPage} disabled={!hasPrev}>← Попередня</button>
+    <div className={styles.pagination}>
+      <button className={styles.pageButton} onClick={() => setCurrentPage(1)} disabled={!hasPrev}>First</button>
+      <button className={styles.pageButton} onClick={prevPage} disabled={!hasPrev}>Prev</button>
 
       {Array.from({ length: totalPages }, (_, i) => (
         <button
           key={i + 1}
+          className={clsx(styles.pageButton, currentPage === i + 1 && styles['pageButton--active'])}
           onClick={() => setCurrentPage(i + 1)}
-          style={{
-            fontWeight: currentPage === i + 1 ? 'bold' : 'normal'
-          }}
         >
           {i + 1}
         </button>
       ))}
 
-      <button onClick={nextPage} disabled={!hasNext}>Наступна →</button>
-      <button onClick={() => setCurrentPage(totalPages)} disabled={!hasNext}>Кінець ⏭️</button>
+      <button className={styles.pageButton} onClick={nextPage} disabled={!hasNext}>Next</button>
+      <button className={styles.pageButton} onClick={() => setCurrentPage(totalPages)} disabled={!hasNext}>Last</button>
     </div>
   );
 };

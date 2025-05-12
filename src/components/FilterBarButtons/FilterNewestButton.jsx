@@ -1,19 +1,26 @@
-// FilterNewestButton.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setSortByNewest } from '../../redux/filters/filterSlice';
+import { setSortByNewestValue } from '../../redux/filters/filterSlice';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
+import styles from './ButtonsStyles/FilterButtons.module.scss';
 
 const FilterNewestButton = () => {
   const dispatch = useDispatch();
+  const [onlyNewest, setOnlyNewest] = useLocalStorage('onlyNewest', false);
 
-  
   const handleClick = () => {
-    dispatch(setSortByNewest()); // Перемикає фільтрацію по новизні
+    const newValue = !onlyNewest;
+    setOnlyNewest(newValue);
+    dispatch(setSortByNewestValue(newValue));
   };
-  
+
+  useEffect(() => {
+    dispatch(setSortByNewestValue(onlyNewest));
+  }, [dispatch, onlyNewest]);
+
   return (
-    <button onClick={handleClick}>
-        Newest
+    <button className={styles.filterButton} onClick={handleClick}>
+      Newest
     </button>
   );
 };

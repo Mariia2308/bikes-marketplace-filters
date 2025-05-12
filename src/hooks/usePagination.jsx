@@ -1,8 +1,7 @@
-import { useMemo } from 'react';
-import { useLocalStorage } from './useLocalStorage'; // Імпортуємо наш хук
+import { useEffect, useMemo } from 'react';
+import { useLocalStorage } from './useLocalStorage';
 
 export const usePagination = (items, initialItemsPerPage = 5) => {
-  // Використовуємо useLocalStorage для збереження сторінки і кількості елементів на сторінку
   const [currentPage, setCurrentPage] = useLocalStorage('currentPage', 1);
   const [itemsPerPage, setItemsPerPage] = useLocalStorage('itemsPerPage', initialItemsPerPage);
 
@@ -14,9 +13,8 @@ export const usePagination = (items, initialItemsPerPage = 5) => {
   }, [items, currentPage, itemsPerPage]);
 
   const goToPage = (page) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-    }
+    const validPage = Math.max(1, Math.min(page, totalPages));
+    setCurrentPage(validPage);
   };
 
   const nextPage = () => goToPage(currentPage + 1);
@@ -24,8 +22,15 @@ export const usePagination = (items, initialItemsPerPage = 5) => {
 
   const handleItemsPerPageChange = (newPerPage) => {
     setItemsPerPage(newPerPage);
-    setCurrentPage(1); // Після зміни кількості елементів на сторінці повертаємось на першу сторінку
+    setCurrentPage(1);
   };
+
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [items.length, totalPages]);
 
   return {
     paginatedItems,

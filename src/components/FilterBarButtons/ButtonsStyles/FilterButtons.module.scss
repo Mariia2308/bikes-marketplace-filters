@@ -1,0 +1,108 @@
+.filterContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  width: fit-content;
+}
+
+// === Общая кнопка
+.filterButton {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 10px 17px;
+  font-size: 16px;
+  line-height: 19px;
+  font-weight: 400;
+  color: #6B7280;
+  background-color: #FFFFFF;
+  border: 1px solid #C7C7C7;
+  border-radius: 25px;
+  cursor: pointer;
+  white-space: nowrap;
+  box-sizing: border-box;
+  min-width: 131px;
+}
+
+// === Кнопка Reset (иконка, меньше размером)
+.resetButton {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 3.1rem;
+  height: 3.1rem;
+  padding: 0.6rem;
+  background: #fff;
+  border: 1px solid #c7c7c7;
+  border-radius: 100px;
+  cursor: pointer;
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: #6b7280;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.chevron {
+  margin-left: 0.4rem;
+  font-size: 0.9rem;
+}
+
+// === Dropdown list
+.dropdownList {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  left: 0;
+  width: 100%;
+  background-color: var(--dropdown-bg, #fff);
+  border: 1px solid var(--dropdown-border, #ccc);
+  border-radius: 25px;
+  padding: 10px;
+  z-index: 100;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: var(--text-color, #000);
+  box-sizing: border-box;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+.checkboxContainer {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.checkboxItem {
+  margin-bottom: 10px;
+}
+
+.checkboxLabel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.checkboxLabel input {
+  margin-left: 10px;
+}
+
+// === Мобильные и планшеты — только минимальные правки
+@media (max-width: 1199px) {
+  .filterContainer {
+    width: auto;
+  }
+
+  .dropdownList {
+    font-size: 13px;
+  }
+}

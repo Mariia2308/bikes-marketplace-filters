@@ -1,16 +1,13 @@
-
-import './App.css'
-import Home from './pages/Home'
+import React from "react";
+import Home from "./pages/Home";
+import "./styles/main.scss"; // підключення глобальних стилів
 
 function App() {
-
-
   return (
-    <>
-    <Home />
-
-    </>
-  )
+    <div className="appContainer">
+      <Home />
+    </div>
+  );
 }
 
-export default App
+export default App;

@@ -1,0 +1,104 @@
+.filterBar {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.6rem;
+  background: #f3f3f3;
+  border-radius: 0.4rem;
+  width: 100%;
+  font-family: "Inter", sans-serif;
+  box-sizing: border-box;
+  gap: 11rem;
+}
+
+.labelWrapper {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+.labelWrapper span {
+  font-size: 1.6rem;
+  line-height: 2rem;
+  white-space: nowrap;
+  color: #989898;
+}
+
+.buttonGroup {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.6rem 1.2rem;
+  flex: 1;
+  min-width: 0;
+  position: relative;
+}
+
+.resetButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 3.1rem;
+  height: 3.1rem;
+  background: #fff;
+  border: 1px solid #c7c7c7;
+  border-radius: 100px;
+  cursor: pointer;
+  padding: 0.6rem;
+  margin-left: auto;
+}
+.resetButton svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  fill: #6b7280;
+  transition: transform 0.2s ease;
+}
+.resetButton svg:hover {
+  transform: rotate(180deg);
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .filterBar {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.6rem;
+    text-align: center;
+  }
+  .labelWrapper {
+    justify-content: center;
+    width: 100%;
+  }
+  .buttonGroup {
+    justify-content: center;
+    width: 100%;
+    gap: 1.2rem;
+  }
+  .resetButton {
+    margin: 0 auto;
+  }
+}
+@media (max-width: 767px) {
+  .filterBar {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    text-align: center;
+  }
+  .labelWrapper {
+    justify-content: center;
+    width: 100%;
+  }
+  .labelWrapper span {
+    font-size: 1.5rem;
+  }
+  .buttonGroup {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 1.2rem;
+  }
+  .resetButton {
+    margin: 0 auto;
+  }
+}/*# sourceMappingURL=FilterBar.module.css.map */

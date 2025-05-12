@@ -1,41 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setRetailer } from '../../redux/filters/filterSlice'; // Імпортуємо action для зміни рітейлера  
-import { selectSelectedRetailer, selectUniqueRetailers } from '../../redux/filters/filterSelectors';
-import styles from './FilterButtons.module.scss';  // Імпортуємо стилі
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa';  // Іконки для стрілки
+import { setRetailer } from '../../redux/filters/filterSlice';
+import { selectSelectedRetailer, selectUniqueRetailers} from '../../redux/filters/filterSelectors';
+import styles from './ButtonsStyles/FilterButtons.module.scss';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 const FilterRetailButton = () => {
   const dispatch = useDispatch();
   const selectedRetailers = useSelector(selectSelectedRetailer);
   const retailers = useSelector(selectUniqueRetailers);
-  
-  const [isOpen, setIsOpen] = useState(false); // Стан для відображення/сховування списку
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [storedRetailers, setStoredRetailers] = useLocalStorage('selectedRetailers', []);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    if (storedRetailers.length > 0) {
+      dispatch(setRetailer(storedRetailers));
+    }
+  }, [dispatch, storedRetailers]);
+
+  useEffect(() => {
+    setStoredRetailers(selectedRetailers);
+  }, [selectedRetailers, setStoredRetailers]);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleCheckboxChange = (e) => {
-    const retailer = e.target.value;
-    if (selectedRetailers.includes(retailer)) {
-      // Видалення рітейлера, якщо він вже вибраний
-      dispatch(setRetailer(selectedRetailers.filter(r => r !== retailer)));
+    const value = e.target.value;
+    if (selectedRetailers.includes(value)) {
+      dispatch(setRetailer(selectedRetailers.filter(r => r !== value)));
     } else {
-      // Додавання рітейлера до вибраних
-      dispatch(setRetailer([...selectedRetailers, retailer]));
+      dispatch(setRetailer([...selectedRetailers, value]));
     }
   };
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen); // Перемикання стану випадаючого списку
-  };
+  const toggleDropdown = () => setIsOpen(prev => !prev);
 
   return (
-    <div className={styles.filterContainer}>
-      {/* Кнопка для відкриття/закриття списку */}
-      <button className={styles.filterButton} onClick={toggleDropdown}>
+    <div className={styles.filterContainer} ref={dropdownRef}>
+      <button
+        className={`${styles.filterButton} ${styles.dropdownFilterButton}`}
+        onClick={toggleDropdown}
+      >
         Retailer
-        {isOpen ? <FaChevronUp className={styles.chevron} /> : <FaChevronDown className={styles.chevron} />}
       </button>
-      
-      {/* Випадаючий список рітейлерів */}
+
       {isOpen && (
         <div className={styles.dropdownList}>
           <div className={styles.checkboxContainer}>
