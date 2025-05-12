@@ -1,8 +1,8 @@
 import React,{Suspense, lazy}from "react";
-import "./styles/main.scss"; // підключення глобальних стилів
+import "./styles/main.scss"; 
 import Loader from "./components/Loader/Loader";
 
-const Home = lazy(() => import("./pages/Home")); // Lazy load Home
+const Home = lazy(() => import("./pages/Home")); 
 
 function App() {
   return (
