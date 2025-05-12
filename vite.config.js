@@ -10,7 +10,7 @@ export default defineConfig({
  },
  preprocessorOptions: {
     scss: {
-      additionalData: '@use "./src/styles/main.scss" as *;', // Підключаємо основний SCSS файл
+      additionalData: '@use "./src/styles/main.scss" as *;', 
     },
     },
 });
