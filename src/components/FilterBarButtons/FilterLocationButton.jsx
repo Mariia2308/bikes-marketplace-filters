@@ -9,8 +9,18 @@ const FilterLocationButton = () => {
   const [, setSavedLocation] = useLocalStorage('location', null);
 
   const handleUseBrowserLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(async (position) => {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser.");
+      return;
+    }
+
+    if (window.isSecureContext === false) {
+      alert("Geolocation only works on HTTPS or localhost.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
         const { latitude, longitude } = position.coords;
 
         try {
@@ -22,17 +32,24 @@ const FilterLocationButton = () => {
           const city = data.address.city || data.address.town || data.address.village || '';
           const country = data.address.country || '';
 
-          const detectedLocation = { country, city };
+          if (!city && !country) {
+            alert("Location could not be determined.");
+            return;
+          }
 
+          const detectedLocation = { country, city };
           dispatch(setLocation(detectedLocation));
           setSavedLocation(detectedLocation);
         } catch (err) {
-          console.error('Error during geolocation:', err);
+          console.error('Geolocation lookup error:', err);
+          alert("Failed to fetch location details.");
         }
-      });
-    } else {
-      alert("Geolocation is not supported by your browser.");
-    }
+      },
+      (error) => {
+        console.warn("Geolocation error:", error);
+        alert("Permission denied or unavailable location. This website is currently coudnt recognize your location. Try default Browser"); 
+      }
+    );
   };
 
   useEffect(() => {
